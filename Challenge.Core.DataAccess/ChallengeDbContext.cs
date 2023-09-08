@@ -22,7 +22,7 @@ public class ChallengeDbContext: DbContext
     protected override void OnConfiguring(DbContextOptionsBuilder options)
     {
         // connect to sqlite database
-        options.UseSqlite();
+        options.UseSqlite(_connectionString);
     }
     
     public DbSet<Customer> Customers { get; set; }
