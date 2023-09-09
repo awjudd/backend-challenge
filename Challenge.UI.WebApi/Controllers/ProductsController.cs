@@ -1,5 +1,6 @@
 using Challenge.Core.DataAccess.Contracts.Persistence;
-using Challenge.Core.Domain.Models;
+using Challenge.UI.WebApi.DataTransfer;
+using Challenge.UI.WebApi.Mappers;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Challenge.UI.WebApi.Controllers;
@@ -18,25 +19,26 @@ public class ProductsController : ControllerBase
     }
 
     [HttpGet(Name = "GetAllProducts")]
-    [ProducesResponseType(typeof(IEnumerable<Product>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(IEnumerable<ProductResponseDto>), StatusCodes.Status200OK)]
     [ProducesDefaultResponseType]
-    public async Task<ActionResult<IEnumerable<Product>>> GetAll()
+    public async Task<ActionResult<IEnumerable<ProductResponseDto>>> GetAll()
     {
-        return Ok(await _productRepository.ListAllAsync());
+        return Ok((await _productRepository.ListAllAsync()).ToDto());
     }
 
     [HttpGet("{id:guid}", Name = "GetProductById")]
-    [ProducesResponseType(typeof(Customer), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ProductResponseDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<Customer>> GetCustomerById(Guid id)
+    public async Task<ActionResult<ProductResponseDto>> GetCustomerById([FromRoute] Guid id)
     {
         var product = await _productRepository.GetByIdAsync(id);
 
         if (product == null)
         {
+            _logger.LogInformation($"Product with id {id} was not found.", id);
             return NotFound();
         }
 
-        return Ok(product);
+        return Ok(product.ToDto());
     }
 }

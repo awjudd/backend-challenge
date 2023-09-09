@@ -39,7 +39,11 @@ public class OrderRepository : BaseRepository<Order>, IOrderRepository
     public async Task<IEnumerable<Order>> FindOrdersForCustomer(Customer customer,
         CancellationToken cancellationToken = default)
     {
-        return await Context.Orders.Where(x => x.Customer.Name == customer.Name).ToListAsync();
+        return await Context.Orders
+            .Include(x => x.Customer)
+            .Include(x => x.Product)
+            .Where(x => x.Customer.Name == customer.Name)
+            .ToListAsync(cancellationToken);
     }
 
     public async Task<IEnumerable<(Customer, IEnumerable<Order>)>> GetOrdersByCustomer(
@@ -56,16 +60,16 @@ public class OrderRepository : BaseRepository<Order>, IOrderRepository
     public async override Task<Order?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
         return await Context.Orders
-            .Include(x => x.Product)
             .Include(x => x.Customer)
+            .Include(x => x.Product)
             .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
     }
 
     public async override Task<IReadOnlyList<Order>> ListAllAsync(CancellationToken cancellationToken = default)
     {
         return await Context.Orders
-            .Include(x => x.Product)
             .Include(x => x.Customer)
+            .Include(x => x.Product)
             .ToListAsync(cancellationToken);
     }
 
