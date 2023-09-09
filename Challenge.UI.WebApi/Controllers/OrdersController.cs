@@ -1,6 +1,7 @@
 using Challenge.Core.DataAccess.Contracts.Persistence;
 using Challenge.Core.Domain.Models;
-using Challenge.UI.WebApi.Models;
+using Challenge.UI.WebApi.DataTransfer;
+using Challenge.UI.WebApi.Mappers;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Challenge.UI.WebApi.Controllers;
@@ -24,15 +25,15 @@ public class OrdersController : ControllerBase
     }
 
     [HttpGet(Name = "GetAllOrders")]
-    [ProducesResponseType(typeof(IEnumerable<Order>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(IEnumerable<OrderResponseDto>), StatusCodes.Status200OK)]
     [ProducesDefaultResponseType]
     public async Task<ActionResult<IEnumerable<Order>>> GetAllOrders()
     {
-        return Ok(await _orderRepository.ListAllAsync());
+        return Ok((await _orderRepository.ListAllAsync()).ToDto());
     }
 
-    [HttpGet("{id:guid}", Name = "GetOrderById")]
-    public async Task<ActionResult<Order>> GetOrderById(Guid id)
+    [HttpGet("{id:guid}")]
+    public async Task<ActionResult<OrderResponseDto>> GetOrderById([FromRoute] Guid id)
     {
         var order = await _orderRepository.GetByIdAsync(id);
 
@@ -41,19 +42,19 @@ public class OrdersController : ControllerBase
             return NotFound();
         }
 
-        return order;
+        return order.ToDto();
     }
 
     [HttpPost(Name = "CreateOrder")]
     [ProducesDefaultResponseType]
-    public async Task<ActionResult<Order>> CreateOrder(
-        [FromBody] OrderDto orderBody
+    public async Task<ActionResult<OrderResponseDto>> CreateOrder(
+        [FromBody] OrderRequestDto orderRequestBody
     )
     {
-        var customer = await _customerRepository.FindOrCreateCustomer(orderBody.CustomerName);
-        var product = await _productRepository.FindOrCreateProduct(orderBody.ProductName);
-        var order = _orderRepository.AddOrderForCustomer(customer, product);
+        var customer = await _customerRepository.FindOrCreateCustomer(orderRequestBody.Customer);
+        var product = await _productRepository.FindOrCreateProduct(orderRequestBody.Product);
+        var order = await _orderRepository.AddOrderForCustomer(customer, product);
 
-        return Ok(order);
+        return CreatedAtAction(nameof(GetOrderById), new {id = order.Id}, order.ToDto());
     }
 }
