@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Challenge.Core.Domain", "Ch
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Challenge.Core.DataAccess", "Challenge.Core.DataAccess\Challenge.Core.DataAccess.csproj", "{BD6ADC26-80F8-4A5B-BAAD-67B487ABABEA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Challenge.UI.WebApi", "Challenge.UI.WebApi\Challenge.UI.WebApi.csproj", "{A21BB5F8-92D4-4182-B071-EDB9A467D6B3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,6 +33,7 @@ Global
 		{A1BE2FD3-5837-417F-AD46-171CE0AF9E40} = {E40637BB-979F-4B30-8735-318A3A3FDBA1}
 		{8719E346-3B3A-4FE4-AD61-2206FDDB2453} = {A1BE2FD3-5837-417F-AD46-171CE0AF9E40}
 		{BD6ADC26-80F8-4A5B-BAAD-67B487ABABEA} = {A1BE2FD3-5837-417F-AD46-171CE0AF9E40}
+		{A21BB5F8-92D4-4182-B071-EDB9A467D6B3} = {884D2488-3E99-4FF2-8CF5-B82626E8963C}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{D14CC158-9840-4708-B463-94878395DFFF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -45,5 +48,9 @@ Global
 		{BD6ADC26-80F8-4A5B-BAAD-67B487ABABEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BD6ADC26-80F8-4A5B-BAAD-67B487ABABEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BD6ADC26-80F8-4A5B-BAAD-67B487ABABEA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A21BB5F8-92D4-4182-B071-EDB9A467D6B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A21BB5F8-92D4-4182-B071-EDB9A467D6B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A21BB5F8-92D4-4182-B071-EDB9A467D6B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A21BB5F8-92D4-4182-B071-EDB9A467D6B3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

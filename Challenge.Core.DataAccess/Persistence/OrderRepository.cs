@@ -53,6 +53,22 @@ public class OrderRepository : BaseRepository<Order>, IOrderRepository
             .ToListAsync(cancellationToken);
     }
 
+    public async override Task<Order?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
+    {
+        return await Context.Orders
+            .Include(x => x.Product)
+            .Include(x => x.Customer)
+            .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+    }
+
+    public async override Task<IReadOnlyList<Order>> ListAllAsync(CancellationToken cancellationToken = default)
+    {
+        return await Context.Orders
+            .Include(x => x.Product)
+            .Include(x => x.Customer)
+            .ToListAsync(cancellationToken);
+    }
+
     public async Task<Order?> FindProductOrdersForCustomer(Customer customer, Product product,
         CancellationToken cancellationToken = default)
     {
